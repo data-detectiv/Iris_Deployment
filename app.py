@@ -38,11 +38,18 @@ st.text('')
 if st.button("Predict type of Iris"):
     result = predict(
         np.array([[sepal_l, sepal_w, petal_l, petal_w]]))
-    st.text(result[0])
+    class_index = result[0]  # 0, 1, or 2
+    class_names = {0: "setosa", 1: "versicolor", 2: "virginica"}
+    class_name = class_names.get(class_index, "unknown")
+    
+    st.text(f"Predicted class: {class_name}")
 
     # Display the image/icon corresponding to the predicted class
-    image_path = class_to_image(result[0].split("-")[1])
-    st.image(image_path, use_column_width=True)
+    image_path = class_to_image(class_name)
+    if image_path:
+        st.image(image_path, use_container_width=True)
+    else:
+        st.error("No image found for the predicted class.")
 
 
 st.text('')
